@@ -1,0 +1,50 @@
+{
+    "entregadores": [
+      {
+        "identificador": "ED001",
+        "nome": "João da Silva",
+        "cnpj": "12.345.678/0001-95",
+        "data_nascimento": "1990-05-15T00:00:00Z",
+        "numero_cnh": "12345678900",
+        "tipo_cnh": "B",
+        "imagem_cnh": "link_para_imagem_cnh_joao.jpg"
+      },
+      {
+        "identificador": "ED002",
+        "nome": "Maria Oliveira",
+        "cnpj": "98.765.432/0001-10",
+        "data_nascimento": "1985-08-22T00:00:00Z",
+        "numero_cnh": "09876543210",
+        "tipo_cnh": "A",
+        "imagem_cnh": "link_para_imagem_cnh_maria.jpg"
+      },
+      {
+        "identificador": "ED003",
+        "nome": "Carlos Pereira",
+        "cnpj": "11.223.344/0001-88",
+        "data_nascimento": "1992-01-30T00:00:00Z",
+        "numero_cnh": "12312312312",
+        "tipo_cnh": "D",
+        "imagem_cnh": "link_para_imagem_cnh_carlos.jpg"
+      },
+      {
+        "identificador": "ED004",
+        "nome": "Ana Costa",
+        "cnpj": "22.334.455/0001-77",
+        "data_nascimento": "1988-11-11T00:00:00Z",
+        "numero_cnh": "32132132132",
+        "tipo_cnh": "AB",
+        "imagem_cnh": "link_para_imagem_cnh_ana.jpg"
+      },
+      {
+        "identificador": "ED005",
+        "nome": "Pedro Santos",
+        "cnpj": "33.445.556/0001-66",
+        "data_nascimento": "1995-03-03T00:00:00Z",
+        "numero_cnh": "45645645645",
+        "tipo_cnh": "C",
+        "imagem_cnh": "link_para_imagem_cnh_pedro.jpg"
+      }
+    ]
+  }
+  

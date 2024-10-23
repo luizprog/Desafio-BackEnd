@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  api:
+    image: locacao-desafio-backend
+    container_name: locacao-desafio-backend
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"  # Mapeando porta 5000 do host para a 8080 do container
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_URLS=http://+:5000   
+      - ASPNETCORE_ENVIRONMENT=Development    
+      - ConnectionStrings__DefaultConnection=Host=database;Port=5432;Database=locacao_desafio;Username=postgres;Password=postgres
+
+  database:
+    image: postgres:latest
+    container_name: locacaodatabase
+    environment:
+      - POSTGRES_DB=locacao_desafio
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/locacao-db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 5s
+      timeout: 2s
+      retries: 10
+  
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"  # Porta padrão do RabbitMQ
+      - "15672:15672" # Porta do gerenciamento

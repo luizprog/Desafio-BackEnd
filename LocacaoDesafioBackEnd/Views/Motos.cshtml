@@ -1,0 +1,24 @@
+@using LocacaoDesafioBackEnd.Models
+@model LocacaoDesafioBackEnd.Models.Moto
+
+<h2>Cadastrar Nova Moto</h2>
+
+<form asp-action="CadastrarMoto" method="post">
+    <div>
+        <label>Identificador:</label>
+        <input asp-for="Identificador" required />
+    </div>
+    <div>
+        <label>Ano:</label>
+        <input asp-for="Ano" required />
+    </div>
+    <div>
+        <label>Modelo:</label>
+        <input asp-for="Modelo" required />
+    </div>
+    <div>
+        <label>Placa:</label>
+        <input asp-for="Placa" required />
+    </div>
+    <button type="submit">Cadastrar</button>
+</form>

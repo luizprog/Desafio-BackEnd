@@ -1,0 +1,45 @@
+{
+    "motos": [
+      {
+        "modelo": "CG 160",
+        "marca": "Honda",
+        "disponivel": true,
+        "ano": 2022,
+        "cor": "Vermelha",
+        "placa": "ABC1D23"
+      },
+      {
+        "modelo": "Fazer 250",
+        "marca": "Yamaha",
+        "disponivel": true,
+        "ano": 2021,
+        "cor": "Azul",
+        "placa": "XYZ4E56"
+      },
+      {
+        "modelo": "GSX-R150",
+        "marca": "Suzuki",
+        "disponivel": true,
+        "ano": 2023,
+        "cor": "Preto",
+        "placa": "JKL7G89"
+      },
+      {
+        "modelo": "Ninja 300",
+        "marca": "Kawasaki",
+        "disponivel": true,
+        "ano": 2020,
+        "cor": "Verde",
+        "placa": "DEF2H34"
+      },
+      {
+        "modelo": "Bros 160",
+        "marca": "Honda",
+        "disponivel": true,
+        "ano": 2021,
+        "cor": "Amarela",
+        "placa": "GHI5I12"
+      }
+    ]
+  }
+  

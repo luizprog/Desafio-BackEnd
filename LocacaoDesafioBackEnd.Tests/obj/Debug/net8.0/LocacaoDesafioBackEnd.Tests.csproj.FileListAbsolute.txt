@@ -1,0 +1,7 @@
+/home/ubuntu22pc/Desktop/Doing/Dev/teste_mottu/Desafio-BackEnd/LocacaoDesafioBackEnd.Tests/bin/Debug/net8.0/CoverletSourceRootsMapping_LocacaoDesafioBackEnd.Tests
+/home/ubuntu22pc/Desktop/Doing/Dev/teste_mottu/Desafio-BackEnd/LocacaoDesafioBackEnd.Tests/obj/Debug/net8.0/LocacaoDesafioBackEnd.Tests.csproj.AssemblyReference.cache
+/home/ubuntu22pc/Desktop/Doing/Dev/teste_mottu/Desafio-BackEnd/LocacaoDesafioBackEnd.Tests/obj/Debug/net8.0/LocacaoDesafioBackEnd.Tests.GeneratedMSBuildEditorConfig.editorconfig
+/home/ubuntu22pc/Desktop/Doing/Dev/teste_mottu/Desafio-BackEnd/LocacaoDesafioBackEnd.Tests/obj/Debug/net8.0/LocacaoDesafioBackEnd.Tests.AssemblyInfoInputs.cache
+/home/ubuntu22pc/Desktop/Doing/Dev/teste_mottu/Desafio-BackEnd/LocacaoDesafioBackEnd.Tests/obj/Debug/net8.0/LocacaoDesafioBackEnd.Tests.AssemblyInfo.cs
+/home/ubuntu22pc/Desktop/Doing/Dev/teste_mottu/Desafio-BackEnd/LocacaoDesafioBackEnd.Tests/obj/Debug/net8.0/LocacaoDesafioBackEnd.Tests.csproj.CoreCompileInputs.cache
+/home/ubuntu22pc/Desktop/Doing/Dev/teste_mottu/Desafio-BackEnd/LocacaoDesafioBackEnd.Tests/obj/Debug/net8.0/LocacaoDesafioBackEnd.Tests.sourcelink.json
