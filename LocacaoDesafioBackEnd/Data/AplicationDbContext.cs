@@ -18,7 +18,7 @@ namespace LocacaoDesafioBackEnd.Data
 
             // Define nomes das tabelas em minúsculas
             modelBuilder.Entity<Entregador>().ToTable("entregadores");
-            modelBuilder.Entity<Moto>().ToTable("motos");
+            modelBuilder.Entity<Moto>().ToTable("motos").HasIndex(m => m.Placa).IsUnique();
             modelBuilder.Entity<Locacao>().ToTable("locacoes");
         }
     }
