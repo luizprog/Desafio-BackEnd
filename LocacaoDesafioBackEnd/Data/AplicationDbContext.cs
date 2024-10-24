@@ -1,4 +1,5 @@
 using LocacaoDesafioBackEnd.Models;
+using LocacaoDesafioBackEnd.Models.Notifications;
 using Microsoft.EntityFrameworkCore;
 
 namespace LocacaoDesafioBackEnd.Data
@@ -11,7 +12,8 @@ namespace LocacaoDesafioBackEnd.Data
         public DbSet<Moto> Motos { get; set; }
         public DbSet<Locacao> Locacoes { get; set; }
         public DbSet<Entregador> Entregadores { get; set; }
-
+        public DbSet<Notificacao> Notificacoes { get; set; }
+        public DbSet<MotoNotificacao> MotoNotificacoes { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -20,6 +22,10 @@ namespace LocacaoDesafioBackEnd.Data
             modelBuilder.Entity<Entregador>().ToTable("entregadores");
             modelBuilder.Entity<Moto>().ToTable("motos").HasIndex(m => m.Placa).IsUnique();
             modelBuilder.Entity<Locacao>().ToTable("locacoes");
+            modelBuilder.Entity<MotoNotificacao>()
+            .HasOne(mn => mn.Notificacao)
+            .WithMany()
+            .HasForeignKey(mn => mn.NotificacaoId);
         }
     }
 }
