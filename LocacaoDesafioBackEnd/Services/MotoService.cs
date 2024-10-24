@@ -1,7 +1,6 @@
 using LocacaoDesafioBackEnd.Events;
 using LocacaoDesafioBackEnd.Models;
 using LocacaoDesafioBackEnd.Services;
-using System.Threading.Tasks;
 
 public class MotoService
 {
@@ -31,7 +30,22 @@ public class MotoService
     {
         _messageBus.SubscribeAsync<MotoCadastradaEvent>(async message =>
         {
-            await Task.CompletedTask;
+            await HandleMotoCadastradaEvent(message);
         });
+    }
+
+    private async Task HandleMotoCadastradaEvent(MotoCadastradaEvent message)
+    {
+        if (message.Ano == 2024)
+        {
+            NotifyFor2024(message);
+        }
+        await Task.CompletedTask; // Simulando um processamento assíncrono
+    }
+
+    private void NotifyFor2024(MotoCadastradaEvent message)
+    {
+        // Lógica de notificação quando o ano for 2024
+        Console.WriteLine($"Notificação: A moto cadastrada com ID {message.Id} é de 2024!");
     }
 }
