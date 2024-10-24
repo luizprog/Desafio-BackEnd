@@ -1,0 +1,29 @@
+# Ignore build and compiler outputs
+bin/
+obj/
+out/
+
+# Ignore user-specific files
+*.user
+*.rsuser
+*.suo
+*.vsp
+
+# Ignore DLLs and NuGet packages
+*.dll
+*.exe
+*.pdb
+*.nupkg
+*.log
+
+# Ignore coverage results and testing files
+TestResults/
+*.coverage
+*.coveragexml
+
+# Ignore configuration and environment files
+appsettings.*.json
+.env
+
+# Ignore Visual Studio Code workspace settings
+.vscode/
