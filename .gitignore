@@ -1,7 +1,10 @@
 # Ignore build and compiler outputs
-*/bin/
-*/obj/
-*/out/
+**/bin/
+**/obj/
+**/out/
+bin/
+obj/
+out/
 
 # Ignore user-specific files
 *.user
