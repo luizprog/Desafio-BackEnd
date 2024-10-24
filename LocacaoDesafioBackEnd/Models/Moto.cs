@@ -10,26 +10,23 @@ namespace LocacaoDesafioBackEnd.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
+        [Required] // Obrigatório
         [StringLength(100)]
         public string Modelo { get; set; }
 
-        [Required]
-        [StringLength(50)]
+        [StringLength(50)] // Não obrigatório
         public string Marca { get; set; }
 
-        [Required]
-        public bool Disponivel { get; set; }
+        public bool Disponivel { get; set; } // Não obrigatório
 
-        [Required]
+        [Required] // Obrigatório
         [StringLength(20)] // Ajuste o tamanho conforme necessário
         public string Placa { get; set; } // Adicione este campo
 
-        [Required]
+        [Required] // Obrigatório
         public int Ano { get; set; }
 
-        [Required]
-        [StringLength(100)]
+        [StringLength(100)] // Não obrigatório
         public string Cor { get; set; }
     }
 }
