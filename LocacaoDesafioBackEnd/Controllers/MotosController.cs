@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using LocacaoDesafioBackEnd.Models;
 using LocacaoDesafioBackEnd.Data;
 using Microsoft.EntityFrameworkCore;
+using LocacaoDesafioBackEnd.Events;
+using LocacaoDesafioBackEnd.Services;
 
 namespace LocacaoDesafioBackEnd.Controllers
 {
@@ -12,10 +14,12 @@ namespace LocacaoDesafioBackEnd.Controllers
     public class MotosController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        private readonly MotoService _motoService;
 
-        public MotosController(ApplicationDbContext context)
+        public MotosController(ApplicationDbContext context, MotoService motoService)
         {
             _context = context;
+            _motoService = motoService; // Inicializa o MotoService
         }
 
         /// <summary>
@@ -43,8 +47,7 @@ namespace LocacaoDesafioBackEnd.Controllers
             _context.Motos.Add(moto);
             await _context.SaveChangesAsync();
 
-            // Publicar o evento de moto cadastrada
-            //await _motoEventService.PublishMotoCadastradaEvent(moto);
+            await _motoService.PublishMotoCadastradaEvent(moto);
 
             return CreatedAtAction(nameof(Details), new { id = moto.Id }, moto);
         }

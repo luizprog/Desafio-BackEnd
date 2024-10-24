@@ -33,6 +33,8 @@ builder.Services.AddSingleton<RabbitMqService>(sp =>
 });
 builder.Services.AddScoped<IMessageBus, RabbitMqService>();
 builder.Services.AddScoped<RabbitMqHostedService>(); // Mantenha como scoped
+// Registre o serviço que usa IMessageBus
+builder.Services.AddTransient<MotoService>();
 
 var app = builder.Build();
 
