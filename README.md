@@ -1,9 +1,9 @@
 ## Ambiente de desenvolvimento Ubuntu / Debian
 # Passo 1
- Garantir que dotnet e docker estejam instalados na maquina de desenvolvimento
-
+# Garantir que dotnet e docker estejam instalados na maquina de desenvolvimento
+bash:# cd {local de download do projeto}/Desafio-BackEnd/LocacaoDesafioBackEnd
 # Passo 2
- executar o seguinte bash na raiz do projeto
+# executar o seguinte bash na raiz do projeto
 bash:# sh settingUpDocker.sh 
 
 Após este comando a api, o postgres e o rabbitmq devem ficar disponiveis para uso
