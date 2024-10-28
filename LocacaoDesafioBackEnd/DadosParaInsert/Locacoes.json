@@ -1,5 +1,4 @@
-{
-    "locacoes": [
+[
       {
         "motoId": 1,
         "entregadorId": 1,
@@ -19,5 +18,4 @@
         "dataDevolucao": "2024-11-01T09:00:00Z"        
       }
     ]
-  }
   

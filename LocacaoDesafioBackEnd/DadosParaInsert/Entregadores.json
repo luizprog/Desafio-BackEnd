@@ -1,5 +1,4 @@
-{
-    "entregadores": [
+[
       {
         "identificador": "ED001",
         "nome": "João da Silva",
@@ -46,5 +45,3 @@
         "imagem_cnh": "link_para_imagem_cnh_pedro.jpg"
       }
     ]
-  }
-  

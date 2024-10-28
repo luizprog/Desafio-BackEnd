@@ -6,6 +6,7 @@ using LocacaoDesafioBackEnd.Data;
 using Microsoft.EntityFrameworkCore;
 using LocacaoDesafioBackEnd.Events;
 using LocacaoDesafioBackEnd.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LocacaoDesafioBackEnd.Controllers
 {
@@ -85,12 +86,33 @@ namespace LocacaoDesafioBackEnd.Controllers
         }
 
         /// <summary>
-        /// Atualizar a placa de uma moto existente
+        /// Buscar moto por placa (Acesso apenas para Admin)
+        /// </summary>
+        /// <param name="placa">Placa da moto a ser buscada</param>
+        /// <returns>Detalhes da moto</returns>
+        [HttpGet("placa/{placa}")]
+        [Authorize(Roles = "Admin")]
+        [ProducesResponseType(typeof(Moto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ApiExplorerSettings(GroupName = "v1")]
+        public async Task<IActionResult> GetByPlaca(string placa)
+        {
+            var moto = await _context.Motos.FirstOrDefaultAsync(m => m.Placa == placa);
+            if (moto == null)
+            {
+                return NotFound(new { message = "Moto não encontrada." });
+            }
+            return Ok(moto);
+        }
+
+        /// <summary>
+        /// Atualizar a placa de uma moto existente (Acesso apenas para Admin)
         /// </summary>
         /// <param name="id">ID da moto cuja placa será atualizada</param>
         /// <param name="placa">Nova placa para a moto</param>
         /// <returns>Resposta com a moto atualizada</returns>
         [HttpPut("{id}/placa")]
+        [Authorize(Roles = "Admin")]
         [ProducesResponseType(typeof(Moto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -114,29 +136,6 @@ namespace LocacaoDesafioBackEnd.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(existingMoto); // Retorna a moto com a placa atualizada
-        }
-
-        /// <summary>
-        /// Deletar uma moto pelo ID
-        /// </summary>
-        /// <param name="id">ID da moto a ser deletada</param>
-        /// <returns>Resposta sem conteúdo</returns>
-        [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ApiExplorerSettings(GroupName = "v1")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var moto = await _context.Motos.FindAsync(id);
-            if (moto == null)
-            {
-                return NotFound();
-            }
-
-            _context.Motos.Remove(moto);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
     }

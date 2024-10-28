@@ -17,14 +17,20 @@ namespace LocacaoDesafioBackEnd.Services
         public RabbitMqService(IConfiguration configuration)
         {
             var hostname = configuration["RabbitMQ:HostName"]; // Lê o hostname do arquivo de configuração
-            var factory = new ConnectionFactory() { HostName = hostname };
+            var port = configuration.GetValue<int>("RabbitMQ:Port"); // Adicione a porta se necessário
+            var username = configuration["RabbitMQ:Username"];
+            var password = configuration["RabbitMQ:Password"];
+
+            var factory = new ConnectionFactory()
+            {
+                HostName = hostname,
+                Port = port,
+                UserName = username,
+                Password = password
+            };
+
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
-            _channel.QueueDeclare(queue: "vehicle-registered",
-                                 durable: false,
-                                 exclusive: false,
-                                 autoDelete: false,
-                                 arguments: null);
         }
 
         // Método Publish genérico com restrições (verificar restrições na interface IMessageBus)

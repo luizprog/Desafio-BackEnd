@@ -1,5 +1,4 @@
-{
-    "motos": [
+[
       {
         "modelo": "CG 160",
         "marca": "Honda",
@@ -41,5 +40,4 @@
         "placa": "GHI5I12"
       }
     ]
-  }
   
