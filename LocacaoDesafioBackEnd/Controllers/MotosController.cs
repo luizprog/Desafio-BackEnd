@@ -124,5 +124,34 @@ namespace LocacaoDesafioBackEnd.Controllers
 
             return Ok(existingMoto); // Retorna a moto com a placa atualizada
         }
+
+        /// <summary>
+        /// Remove uma moto
+        /// </summary>
+        /// <param name="moto">Modelo da moto a ser deletada</param>
+        /// <returns>Objeto da moto deletada</returns>
+        [HttpPost("delete")]
+        [Authorize(Policy = "AdminOnly")] // Corrigido para usar a política definida
+        public async Task<IActionResult> Delete([FromBody] Moto moto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            // Verifica se existe alguma locação associada à moto
+            if (await _context.Locacoes.AnyAsync(m => m.MotoId == moto.Id))
+            {
+                return BadRequest(new { message = $"Existe locação registrada para a moto id: {moto.Id}." });
+            }
+
+            // Remove a moto do contexto e salva as alterações
+            _context.Motos.Remove(moto); 
+            await _context.SaveChangesAsync();
+
+            await _motoService.PublishMotoExcluidaEvent(moto);
+
+            return Ok(new { message = $"Moto  id: {moto.Id} excluída com sucesso." });
+        }
     }
 }

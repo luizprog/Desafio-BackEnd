@@ -75,4 +75,14 @@ public class MotoService
         await _dbContext.MotoNotificacoes.AddAsync(motoNotificacao);
         await _dbContext.SaveChangesAsync(); // Salva a associação com a moto
     }
+
+    public async Task PublishMotoExcluidaEvent(Moto moto)
+    {
+
+        await Task.Run(() =>
+        {
+            Console.WriteLine($"Moto excluída: {moto.Id}");
+        });
+    }
+
 }

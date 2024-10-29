@@ -13,7 +13,7 @@ namespace LocacaoDesafioBackEnd.Extensions
             try
             {
                 // Opcional: Excluir o banco de dados existente e criar um novo
-                dbContext.Database.EnsureDeleted();
+                //dbContext.Database.EnsureDeleted();
                 dbContext.Database.EnsureCreated();
 
                 dbContext.Database.Migrate();
