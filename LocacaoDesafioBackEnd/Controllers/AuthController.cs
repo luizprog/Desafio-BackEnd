@@ -31,16 +31,17 @@ public class AuthController : ControllerBase
         }
 
         // Gera o token JWT
-        var token = GenerateJwtToken(user);
+        var token = await GenerateJwtToken(user); // Chamada async
         return Ok(new { Token = token });
     }
 
-    private string GenerateJwtToken(ApplicationUser user)
+    private async Task<string> GenerateJwtToken(ApplicationUser user) // Método marcado como async
     {
         var claims = new[]
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new Claim(ClaimTypes.Role, await _userManager.IsInRoleAsync(user, "Admin") ? "Admin" : "User") // Verifica se o usuário é admin
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));

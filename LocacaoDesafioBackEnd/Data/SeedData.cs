@@ -1,10 +1,10 @@
 using System.Text.Json;
+using System.Security.Claims;
 using LocacaoDesafioBackEnd.Data;
 using LocacaoDesafioBackEnd.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 
 public static class SeedData
 {
@@ -16,8 +16,7 @@ public static class SeedData
             try
             {
                 var userManager = scopedServices.GetRequiredService<UserManager<ApplicationUser>>();
-
-                var context = scopedServices.GetRequiredService<ApplicationDbContext>(); // Ajuste o nome para seu DbContext específico
+                var context = scopedServices.GetRequiredService<ApplicationDbContext>(); 
                 var roleManager = scopedServices.GetRequiredService<RoleManager<IdentityRole>>();
 
                 var roles = new[] { "Admin", "Guest" };
@@ -55,10 +54,15 @@ public static class SeedData
                 foreach (var user in users)
                 {
                     var password = user.UserName == "admin" ? "admin" : "guest";
-                    var result = await userManager.CreateAsync(user: user, password: password);
+                    var result = await userManager.CreateAsync(user, password);
+
                     if (result.Succeeded)
                     {
-                        await userManager.AddToRoleAsync(user, user.UserName == "admin" ? "Admin" : "Guest");
+                        var role = user.UserName == "admin" ? "Admin" : "Guest";
+                        if (!await userManager.IsInRoleAsync(user, role))
+                        {
+                            await userManager.AddToRoleAsync(user, role);
+                        }
                     }
                     else
                     {
@@ -94,13 +98,11 @@ public static class SeedData
         {
             foreach (var moto in motos)
             {
-                await context.Motos.AddAsync(moto); // Adiciona cada moto individualmente
+                await context.Motos.AddAsync(moto); 
             }
 
-            await context.SaveChangesAsync(); // Salva as alterações no banco de dados
+            await context.SaveChangesAsync();
         }
-
-
 
         var entregadoresPath = Path.Combine(AppContext.BaseDirectory, "DadosParaInsert", "Entregadores.json");
         var entregadoresJson = await File.ReadAllTextAsync(entregadoresPath);
@@ -108,10 +110,7 @@ public static class SeedData
         var entregadores = JsonSerializer.Deserialize<List<Entregador>>(entregadoresJson, options);
         if (entregadores != null)
         {
-            foreach (var entregador in entregadores)
-            {
-                await context.Entregadores.AddRangeAsync(entregador);
-            }
+            await context.Entregadores.AddRangeAsync(entregadores);
             await context.SaveChangesAsync();
         }
 
@@ -122,12 +121,8 @@ public static class SeedData
 
         if (locacoes != null)
         {
-            foreach (var locacao in locacoes)
-            {
-                await context.Locacoes.AddRangeAsync(locacao);
-            }
+            await context.Locacoes.AddRangeAsync(locacoes);
             await context.SaveChangesAsync();
         }
-
     }
 }

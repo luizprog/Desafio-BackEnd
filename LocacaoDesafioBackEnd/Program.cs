@@ -45,7 +45,6 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 
-    c.OperationFilter<SwaggerDescriptionFilter>();
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     c.IncludeXmlComments(xmlPath);
@@ -54,7 +53,6 @@ builder.Services.AddSwaggerGen(c =>
 // Configuração do banco de dados
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
-
 
 // Configurando o Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -87,9 +85,11 @@ builder.Services.AddAuthentication(options =>
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
+
+// Configuração de autorização
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("admin"));
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
 });
 
 // Configurando serviços adicionais
