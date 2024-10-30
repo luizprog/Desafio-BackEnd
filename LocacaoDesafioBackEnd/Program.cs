@@ -101,6 +101,14 @@ builder.Services.AddSingleton<RabbitMqService>(sp =>
 builder.Services.AddScoped<IMessageBus, RabbitMqService>();
 builder.Services.AddScoped<RabbitMqHostedService>();
 builder.Services.AddTransient<MotoService>();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
+});
+builder.Services.AddScoped<UserService>();
 
 var app = builder.Build();
 
@@ -122,20 +130,25 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
+// Middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
+    app.UseCors("AllowAll");
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
         c.SwaggerEndpoint("/swagger/v1/swagger.json", "Locacao Desafio API V1");
     });
 }
+else
+{
+    app.UseHttpsRedirection();
+}
 
-app.UseCors("AllowAll");
-app.UseHttpsRedirection();
 app.UseRouting();
-app.UseAuthentication();
+app.UseCors("AllowAll"); // Adicione CORS antes de UseAuthentication
+app.UseAuthentication(); // Garanta que a autenticação esteja após o CORS
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

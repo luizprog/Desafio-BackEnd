@@ -1,0 +1,33 @@
+{
+    "Roles": [
+      "Admin",
+      "User"
+    ],
+    "Users": [
+      {
+        "userName": "admin",
+        "email": "admin@example.com",
+        "emailConfirmed": true,
+        "isAdmin": true,
+        "password": "admin",
+        "role": "Admin"
+      },
+      {
+        "userName": "guest",
+        "email": "guest@locacao.desafio",
+        "emailConfirmed": true,
+        "isAdmin": false,
+        "password": "guest",
+        "role": "User"
+      },
+      {
+        "userName": "ED001",
+        "email": "ed001@locacao.desafio",
+        "emailConfirmed": true,
+        "isAdmin": false,
+        "password": "ed001",
+        "role": "User"
+      }
+    ]
+  }
+  

@@ -16,10 +16,10 @@ public static class SeedData
             try
             {
                 var userManager = scopedServices.GetRequiredService<UserManager<ApplicationUser>>();
-                var context = scopedServices.GetRequiredService<ApplicationDbContext>(); 
+                var context = scopedServices.GetRequiredService<ApplicationDbContext>();
                 var roleManager = scopedServices.GetRequiredService<RoleManager<IdentityRole>>();
 
-                var roles = new[] { "Admin", "Guest" };
+                var roles = new[] { "Admin", "Guest", "User" };
                 foreach (var role in roles)
                 {
                     if (!await roleManager.RoleExistsAsync(role))
@@ -34,47 +34,12 @@ public static class SeedData
                     return; // DB has been seeded
                 }
 
-                var users = new List<ApplicationUser>
-                {
-                    new ApplicationUser
-                    {
-                        UserName = "admin",
-                        Email = "admin@example.com",
-                        EmailConfirmed = true,
-                        IsAdmin = true
-                    },
-                    new ApplicationUser
-                    {
-                        UserName = "guest",
-                        Email = "guest@example.com",
-                        EmailConfirmed = true
-                    }
-                };
+                // Criação de usuários principais
+                await CreateUserAsync(userManager, "admin", "admin@example.com", "admin", "Admin", isAdmin: true);
+                await CreateUserAsync(userManager, "guest", "guest@example.com", "guest", "Guest");
 
-                foreach (var user in users)
-                {
-                    var password = user.UserName == "admin" ? "admin" : "guest";
-                    var result = await userManager.CreateAsync(user, password);
-
-                    if (result.Succeeded)
-                    {
-                        var role = user.UserName == "admin" ? "Admin" : "Guest";
-                        if (!await userManager.IsInRoleAsync(user, role))
-                        {
-                            await userManager.AddToRoleAsync(user, role);
-                        }
-                    }
-                    else
-                    {
-                        foreach (var error in result.Errors)
-                        {
-                            Console.WriteLine($"Erro ao criar usuário: {error.Description}");
-                        }
-                    }
-                }
-
-                // Chama a função para popular veículos e entregadores
-                await SeedVehiclesAndDeliverersAsync(context);
+                // Chama a função para popular veículos, entregadores e usuários para cada entregador
+                await SeedVehiclesAndDeliverersAsync(context, userManager);
             }
             catch (Exception ex)
             {
@@ -83,7 +48,40 @@ public static class SeedData
         }
     }
 
-    public static async Task SeedVehiclesAndDeliverersAsync(ApplicationDbContext context)
+    private static async Task CreateUserAsync(
+        UserManager<ApplicationUser> userManager,
+        string userName,
+        string email,
+        string password,
+        string role,
+        bool isAdmin = false)
+    {
+        var user = new ApplicationUser
+        {
+            UserName = userName,
+            Email = email,
+            EmailConfirmed = true,
+            IsAdmin = isAdmin
+        };
+
+        var result = await userManager.CreateAsync(user, password);
+        if (result.Succeeded)
+        {
+            if (!await userManager.IsInRoleAsync(user, role))
+            {
+                await userManager.AddToRoleAsync(user, role);
+            }
+        }
+        else
+        {
+            foreach (var error in result.Errors)
+            {
+                Console.WriteLine($"Erro ao criar usuário '{userName}': {error.Description}");
+            }
+        }
+    }
+
+    public static async Task SeedVehiclesAndDeliverersAsync(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
     {
         var motosPath = Path.Combine(AppContext.BaseDirectory, "DadosParaInsert", "Motos.json");
         var motosJson = await File.ReadAllTextAsync(motosPath);
@@ -96,11 +94,7 @@ public static class SeedData
         var motos = JsonSerializer.Deserialize<List<Moto>>(motosJson, options);
         if (motos != null)
         {
-            foreach (var moto in motos)
-            {
-                await context.Motos.AddAsync(moto); 
-            }
-
+            await context.Motos.AddRangeAsync(motos);
             await context.SaveChangesAsync();
         }
 
@@ -112,13 +106,22 @@ public static class SeedData
         {
             await context.Entregadores.AddRangeAsync(entregadores);
             await context.SaveChangesAsync();
+
+            // Criação de usuário para cada entregador
+            foreach (var entregador in entregadores)
+            {
+                var userName = entregador.Identificador;
+                var email = $"{userName.ToLower()}@example.com";
+                var password = $"{userName.ToLower()}"; // Pode ser uma senha padrão ou gerada
+
+                await CreateUserAsync(userManager, userName, email, password, "User");
+            }
         }
 
         var locacoesPath = Path.Combine(AppContext.BaseDirectory, "DadosParaInsert", "Locacoes.json");
         var locacoesJson = await File.ReadAllTextAsync(locacoesPath);
 
         var locacoes = JsonSerializer.Deserialize<List<Locacao>>(locacoesJson, options);
-
         if (locacoes != null)
         {
             await context.Locacoes.AddRangeAsync(locacoes);
