@@ -2,9 +2,11 @@
 **/bin/
 **/obj/
 **/out/
+**/obj/
 bin/
 obj/
 out/
+/obj/
 
 # Ignore user-specific files
 *.user
