@@ -31,6 +31,11 @@ namespace LocacaoDesafioBackEnd.Models
         [Column(TypeName = "decimal(18,2)")]
         public decimal Valor { get; set; }
 
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal ValorDiaria { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal ValorTotal { get; set; }
+
         public virtual Moto Moto { get; set; }
         public virtual Entregador Entregador { get; set; }
     }

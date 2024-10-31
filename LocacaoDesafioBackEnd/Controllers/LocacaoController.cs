@@ -66,6 +66,7 @@ namespace LocacaoDesafioBackEnd.Controllers
             try
             {
                 locacao.Valor = _locacaoService.CalcularValorLocacao(duracaoDias);
+                locacao.ValorDiaria = locacao.Valor / duracaoDias;
             }
             catch (ArgumentException ex)
             {
@@ -83,10 +84,6 @@ namespace LocacaoDesafioBackEnd.Controllers
 
             return CreatedAtAction(nameof(GetLocacoes), new { id = locacao.Id }, locacao);
         }
-
-
-
-
 
         /// <summary>
         /// Atualizar locação existente
@@ -142,6 +139,64 @@ namespace LocacaoDesafioBackEnd.Controllers
             }
 
             return NoContent();
+        }
+
+        /// <summary>
+        /// Consultar finalização de uma locação
+        /// </summary>
+        /// <param name="id">ID da locação a ser consultada</param>
+        /// <returns>O valor estimado da locação</returns>
+        [HttpGet("{id}/calcular")]
+        public async Task<IActionResult> ConsultarValorTotal(int id, [FromQuery] DateTime dataDevolucao)
+        {
+            var locacao = await _context.Locacoes
+                .Include(l => l.Moto)
+                .Include(l => l.Entregador)
+                .FirstOrDefaultAsync(l => l.Id == id);
+
+            if (locacao == null)
+            {
+                return NotFound();
+            }
+
+            // Chama o método de cálculo, mas sem atualizar o banco de dados
+            var valorTotalEstimado = _locacaoService.CalcularValorTotal(new Locacao
+            {
+                DataLocacao = locacao.DataLocacao,
+                DataPrevisaoTermino = locacao.DataPrevisaoTermino,
+                ValorDiaria = locacao.ValorDiaria,
+                DataDevolucao = dataDevolucao
+            });
+
+            return Ok(new
+            {
+                ValorTotalEstimado = valorTotalEstimado
+            });
+        }
+
+
+        /// <summary>
+        /// Finalizar uma locação
+        /// </summary>
+        /// <param name="id">ID da locação a ser finalizada</param>
+        /// <returns>A locação atualizada</returns>
+        [HttpPost("{id}/finalizar")]
+        public async Task<IActionResult> FinalizarLocacao(int id, [FromBody] DateTime dataDevolucao)
+        {
+            var locacao = await _context.Locacoes.FindAsync(id);
+            if (locacao == null)
+            {
+                return NotFound();
+            }
+
+            locacao.DataDevolucao = DateTime.SpecifyKind(dataDevolucao, DateTimeKind.Utc);
+
+            locacao.ValorTotal = _locacaoService.CalcularValorTotal(locacao);
+
+            _context.Locacoes.Update(locacao);
+            await _context.SaveChangesAsync();
+
+            return Ok(locacao);
         }
 
 

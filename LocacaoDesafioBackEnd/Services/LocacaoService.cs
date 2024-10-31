@@ -24,5 +24,48 @@ namespace LocacaoDesafioBackEnd.Services
         {
             return entregador.TipoCNH.Contains("A");
         }
+
+        public decimal CalcularValorTotal(Locacao locacao)
+        {
+            // Calcular o total de dias da locação
+            int totalDias = (locacao.DataPrevisaoTermino - locacao.DataLocacao).Days;
+
+            // Calcular o valor total das diárias
+            decimal totalDiarias = totalDias * locacao.ValorDiaria;
+
+            if (locacao.DataDevolucao.HasValue)
+            {
+                int diasAdicionais = (locacao.DataDevolucao.Value - locacao.DataPrevisaoTermino).Days;
+
+                // Verifica se a devolução foi antes da data prevista
+                if (locacao.DataDevolucao < locacao.DataPrevisaoTermino)
+                {
+                    int diasNaoEfetivados = (locacao.DataPrevisaoTermino - locacao.DataDevolucao.Value).Days;
+                    decimal multa = 0;
+
+                    // Calcular a multa com base no plano de locação
+                    if (totalDias <= 7)
+                    {
+                        multa = 0.20m * (diasNaoEfetivados * locacao.ValorDiaria);
+                    }
+                    else if (totalDias <= 15)
+                    {
+                        multa = 0.40m * (diasNaoEfetivados * locacao.ValorDiaria);
+                    }
+
+                    return totalDiarias - (diasNaoEfetivados * locacao.ValorDiaria) + multa;
+                }
+                // Se a devolução foi depois da data prevista
+                else if (diasAdicionais > 0)
+                {
+                    return totalDiarias + (diasAdicionais * 50); // R$50,00 por diária adicional
+                }
+            }
+
+            return totalDiarias; // Valor total se não houver devolução informada
+        }
+
     }
+
+
 }
