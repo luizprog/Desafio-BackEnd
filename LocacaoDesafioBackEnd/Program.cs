@@ -15,7 +15,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Adiciona suporte para variáveis de ambiente
 builder.Configuration.AddEnvironmentVariables();
 
-// Adiciona serviços ao contêiner
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
@@ -82,7 +81,7 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = builder.Configuration["Jwt:Issuer"],
         ValidAudience = builder.Configuration["Jwt:Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? string.Empty))
     };
 });
 
@@ -103,7 +102,6 @@ builder.Services.AddScoped<RabbitMqHostedService>();
 builder.Services.AddTransient<MotoService>();
 builder.Services.AddTransient<LocacaoService>();
 
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", builder =>
@@ -118,7 +116,7 @@ var app = builder.Build();
 // Aplicando migrações
 app.ApplyMigrations();
 
-// Inicializando dados
+// Inicializando dados basicos de usuario e alguns registros de entidades
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -133,7 +131,6 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// Middleware
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -150,8 +147,8 @@ else
 }
 
 app.UseRouting();
-app.UseCors("AllowAll"); // Adicione CORS antes de UseAuthentication
-app.UseAuthentication(); // Garanta que a autenticação esteja após o CORS
+app.UseCors("AllowAll"); 
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
