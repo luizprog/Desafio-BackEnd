@@ -32,7 +32,7 @@ namespace LocacaoDesafioBackEnd.Models
 
         [Required]
         [JsonPropertyName("tipo_cnh")]
-        [RegularExpression("^(A|B|A\\+B)$", ErrorMessage = "Tipo de CNH deve ser A, B ou A+B.")]
+        [RegularExpression("^(A|B|A\\+B|AB)$", ErrorMessage = "Tipo de CNH deve ser A, B, A+B ou AB.")]
         public string TipoCNH { get; set; }
 
         [Required]

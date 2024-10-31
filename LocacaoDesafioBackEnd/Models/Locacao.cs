@@ -17,10 +17,19 @@ namespace LocacaoDesafioBackEnd.Models
         public int EntregadorId { get; set; }
 
         [Required]
+        [Column(TypeName = "timestamp with time zone")]
         public DateTime DataLocacao { get; set; }
 
+        [Column(TypeName = "timestamp with time zone")]
+        public DateTime? DataDevolucao { get; set; }
+
         [Required]
-        public DateTime DataDevolucao { get; set; }
+        [Column(TypeName = "timestamp with time zone")]
+        public DateTime DataPrevisaoTermino { get; set; }
+
+        [Required]
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal Valor { get; set; }
 
         public virtual Moto Moto { get; set; }
         public virtual Entregador Entregador { get; set; }

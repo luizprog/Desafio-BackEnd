@@ -101,6 +101,9 @@ builder.Services.AddSingleton<RabbitMqService>(sp =>
 builder.Services.AddScoped<IMessageBus, RabbitMqService>();
 builder.Services.AddScoped<RabbitMqHostedService>();
 builder.Services.AddTransient<MotoService>();
+builder.Services.AddTransient<LocacaoService>();
+
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", builder =>

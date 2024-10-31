@@ -1,0 +1,24 @@
+{
+  "motoId": 4,
+  "entregadorId": 4,
+  "dataLocacao": "2024-10-31T13:26:14.324Z",
+  "moto": {
+ "id": 4,
+    "modelo": "Ninja 300",
+    "marca": "Kawasaki",
+    "disponivel": true,
+    "placa": "DEF2H34",
+    "ano": 2020,
+    "cor": "Verde"
+  },
+  "entregador": {
+     "id": 4,
+    "identificador": "ED004",
+    "nome": "Ana Costa",
+    "cnpj": "22334455000177",
+    "data_nascimento": "1988-11-11T00:00:00Z",
+    "numero_cnh": "32132132132",
+    "tipo_cnh": "AB",
+    "imagem_cnh": "link_para_imagem_cnh_ana.jpg"
+  }
+}

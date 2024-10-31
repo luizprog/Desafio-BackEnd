@@ -13,12 +13,12 @@ namespace LocacaoDesafioBackEnd.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly RabbitMqService _rabbitMqService;
-
-        public LocacaoController(ApplicationDbContext context, RabbitMqService rabbitMqService)
+        private readonly LocacaoService _locacaoService;
+        public LocacaoController(ApplicationDbContext context, RabbitMqService rabbitMqService, LocacaoService locacaoService)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _rabbitMqService = rabbitMqService ?? throw new ArgumentNullException(nameof(rabbitMqService));
-
+            _locacaoService = locacaoService ?? throw new ArgumentNullException(nameof(locacaoService));
         }
 
         /// <summary>
@@ -38,41 +38,54 @@ namespace LocacaoDesafioBackEnd.Controllers
         /// <param name="locacao">Dados da nova locação</param>
         /// <returns>A locação cadastrada</returns>
         [HttpPost]
-        public async Task<IActionResult> PostLocacao([FromBody] Locacao locacao)
+        public async Task<IActionResult> PostLocacao([FromBody] Locacao locacao, [FromQuery] int duracaoDias)
         {
-            // Acesse as IDs da moto e do entregador, que são do tipo inteiro
             var motoExistente = await _context.Motos.FindAsync(locacao.MotoId);
             var entregadorExistente = await _context.Entregadores.FindAsync(locacao.EntregadorId);
 
-            // Verifique se o modelo está válido
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            // Verifique se a moto e o entregador existem
             if (motoExistente == null || entregadorExistente == null)
             {
                 return NotFound("Moto ou entregador não encontrado.");
             }
 
-            // Crie a nova locação referenciando as entidades existentes
-            var novaLocacao = new Locacao
+            // Verificar habilitação do entregador
+            if (!_locacaoService.VerificarHabilitacaoCategoriaA(entregadorExistente))
             {
-                MotoId = locacao.MotoId,
-                EntregadorId = locacao.EntregadorId,
-                DataLocacao = locacao.DataLocacao,
-                DataDevolucao = locacao.DataDevolucao,
-                Moto = motoExistente, // Opcional, se você precisar da moto completa
-                Entregador = entregadorExistente // Opcional, se você precisar do entregador completo
-            };
+                return BadRequest("O entregador não possui habilitação na categoria A.");
+            }
 
-            _context.Locacoes.Add(novaLocacao);
+            // Calcular a data de início e o valor da locação com duração dinâmica
+            locacao.DataLocacao = DateTime.SpecifyKind(locacao.DataLocacao, DateTimeKind.Utc);
+            locacao.DataPrevisaoTermino = DateTime.SpecifyKind(locacao.DataLocacao.AddDays(duracaoDias), DateTimeKind.Utc);
+
+            try
+            {
+                locacao.Valor = _locacaoService.CalcularValorLocacao(duracaoDias);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            locacao.MotoId = motoExistente.Id;
+            locacao.EntregadorId = entregadorExistente.Id;
+            // Associar as instâncias encontradas sem adicionar novos registros
+            locacao.Moto = motoExistente;
+            locacao.Entregador = entregadorExistente;
+
+            _context.Locacoes.Add(locacao);
             await _context.SaveChangesAsync();
 
-            // Retorne a resposta adequada após o cadastro
-            return CreatedAtAction(nameof(GetLocacoes), new { id = novaLocacao.Id }, novaLocacao);
+            return CreatedAtAction(nameof(GetLocacoes), new { id = locacao.Id }, locacao);
         }
+
+
+
 
 
         /// <summary>
