@@ -27,12 +27,23 @@ public class AuthController : ControllerBase
         var user = await _userManager.FindByNameAsync(model.Username);
         if (user == null || !await _userManager.CheckPasswordAsync(user, model.Password))
         {
-            return Unauthorized(new { Message = "Credenciais inválidas." });
+            return Unauthorized(new ErrorResponse
+            {
+                Message = "Credenciais inválidas."
+            });
         }
 
-        // Gera o token JWT
-        var token = await GenerateJwtToken(user); // Chamada async
-        return Ok(new { Token = token });
+        var token = await GenerateJwtToken(user);
+
+        // Retorne um Dictionary<string, string>
+        var response = new Dictionary<string, string>
+        {
+            {
+                "Token", token
+            }
+        };
+
+        return Ok(response);
     }
 
     private async Task<string> GenerateJwtToken(ApplicationUser user) // Método marcado como async
