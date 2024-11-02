@@ -1,0 +1,45 @@
+# Ignore build and compiler outputs
+**/bin/
+**/obj/
+**/out/
+**/obj/
+**/db_data/
+**/.idea/
+**/LocacaoDesafioBackEnd.Tests/obj/
+**/LocacaoDesafioBackEnd.Tests/.idea/
+**/LocacaoDesafioBackEnd/.idea/
+LocacaoDesafioBackEnd.Tests/obj/
+LocacaoDesafioBackEnd.Tests/.idea/
+LocacaoDesafioBackEnd/.idea/
+bin/
+obj/
+out/
+db_data/
+.idea/
+obj/
+
+# Ignore user-specific files
+*.user
+*.rsuser
+*.suo
+*.vsp
+
+# Ignore DLLs and NuGet packages
+*.dll
+*.exe
+*.pdb
+*.nupkg
+*.log
+
+# Ignore coverage results and testing files
+*/TestResults/
+TestResults/
+*.coverage
+*.coveragexml
+
+# Ignore configuration and environment files
+appsettings.*.json
+.env
+
+# Ignore Visual Studio Code workspace settings
+.vscode/
