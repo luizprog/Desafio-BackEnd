@@ -3,10 +3,18 @@
 **/obj/
 **/out/
 **/obj/
+**/.idea/
+**/LocacaoDesafioBackEnd.Tests/obj/
+**/LocacaoDesafioBackEnd.Tests/.idea/
+**/LocacaoDesafioBackEnd/.idea/
+LocacaoDesafioBackEnd.Tests/obj/
+LocacaoDesafioBackEnd.Tests/.idea/
+LocacaoDesafioBackEnd/.idea/
 bin/
 obj/
 out/
-/obj/
+.idea/
+obj/
 
 # Ignore user-specific files
 *.user
