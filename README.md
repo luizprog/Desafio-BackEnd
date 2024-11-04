@@ -83,9 +83,9 @@ Monitoramento do RabbitMQ
 
 Para monitorar o RabbitMQ e configurar usuários, siga as instruções abaixo:
 
-    Listar containers ativos:
+Listar containers ativos:
 
-    ```bash
+```bash
   docker ps
   ```
 
