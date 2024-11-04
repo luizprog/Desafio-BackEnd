@@ -56,9 +56,9 @@ Certifique-se de que o .NET SDK, Docker e Docker Compose estão instalados.
 Navegue até o diretório raiz do projeto. Use o Prompt de Comando ou PowerShell:
 
 powershell
-
+```bash
 cd {local de download do projeto}\Desafio-BackEnd\LocacaoDesafioBackEnd
-
+```
 #### Passo 3: Executar o Script de Configuração Docker
 
 Na raiz do projeto, execute o seguinte comando para iniciar os serviços:
