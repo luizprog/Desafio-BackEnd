@@ -1,41 +1,121 @@
-## Ambiente de desenvolvimento Ubuntu / Debian
-# Passo 1
-# Garantir que dotnet, docker e docker-compose estejam instalados na maquina de desenvolvimento
+# Projeto LocacaoDesafioBackEnd
 
-# Passo 2
-# Ir ate a pasta raiz do projeto
-bash:# cd {local de download do projeto}/Desafio-BackEnd/LocacaoDesafioBackEnd
+Este projeto é uma API para gerenciamento de locações de veículos.
 
-# Passo 3
-# executar o seguinte bash na raiz do projeto
-bash:# sh settingUpDocker.sh 
+---
 
-# Após este comando a api, o postgres e o rabbitmq devem ficar disponiveis para uso
+## Ambiente de Desenvolvimento
+
+Instruções para configurar o ambiente de desenvolvimento em diferentes sistemas operacionais.
+
+### Pré-requisitos
+
+Certifique-se de que as seguintes ferramentas estão instaladas:
+
+- .NET SDK
+- Docker
+- Docker Compose
+
+---
+
+## Instalação e Configuração
+
+### Ubuntu / Debian
+
+#### Passo 1: Verificar a Instalação das Dependências
+
+Certifique-se de que `dotnet`, `docker` e `docker-compose` estão instalados na máquina de desenvolvimento.
+
+#### Passo 2: Acessar a Pasta Raiz do Projeto
+
+Navegue até o diretório raiz do projeto:
+
+```bash
+cd {local de download do projeto}/Desafio-BackEnd/LocacaoDesafioBackEnd
+```
+
+Passo 3: Executar o Script de Configuração Docker
+
+Na raiz do projeto, execute o seguinte comando para iniciar os serviços:
+
+```bash
+sh settingUpDocker.sh
+```
+
+Após este comando, a API, o PostgreSQL e o RabbitMQ devem ficar disponíveis para uso.
 
 
-## Ip e porta para acessar cada um dos servicos
-BackEnd: http://localhost:5000/swagger/index.html
-Postgres: localhost:5432
-RabbitMQ: http://localhost:15672
+### Windows
+
+#### Passo 1: Verificar a Instalação das Dependências
+
+Certifique-se de que o .NET SDK, Docker e Docker Compose estão instalados.
+
+#### Passo 2: Acessar a Pasta Raiz do Projeto
+
+Navegue até o diretório raiz do projeto. Use o Prompt de Comando ou PowerShell:
+
+powershell
+
+cd {local de download do projeto}\Desafio-BackEnd\LocacaoDesafioBackEnd
+
+#### Passo 3: Executar o Script de Configuração Docker
+
+Na raiz do projeto, execute o seguinte comando para iniciar os serviços:
+
+```cmd
+settingUpDocker.bat
+```
+
+Após este comando, a API, o PostgreSQL e o RabbitMQ devem ficar disponíveis para uso.
+Acessar os Serviços
+
+    BackEnd: http://localhost:5000/swagger/index.html
+    PostgreSQL: localhost:5432
+    RabbitMQ: http://localhost:15672
+
+### Autenticação e Autorização da API
+
+Para autenticar e autorizar o uso da API, siga as capturas de tela abaixo:
+
+Exemplo de Autenticação 1 Exemplo de Autenticação 2 Exemplo de Autenticação 3 Exemplo de Autenticação 4 Exemplo de Autenticação 5
+Monitoramento do RabbitMQ
+
+Para monitorar o RabbitMQ e configurar usuários, siga as instruções abaixo:
+
+    Listar containers ativos:
+
+    ```bash
+  docker ps```
 
 
-# Autenticar e autorizar uso da API
-![Screenshot from 2024-10-29 15 21 59](https://github.com/user-attachments/assets/b06bcdcb-2ae1-4cd9-85b1-d1807b8872f3)
-![2024-10-29_16-14](https://github.com/user-attachments/assets/65792a00-b066-4547-956b-4d4c9f9b52af)
-![2024-10-29_16-15](https://github.com/user-attachments/assets/8b4725bb-bd52-481f-8ea0-699f9fa7db8d)
-![2024-10-29_16-16](https://github.com/user-attachments/assets/5dd0482e-9166-417d-ae10-29804a8ad714)
-![2024-10-29_16-16_1](https://github.com/user-attachments/assets/ef1dc124-89d6-46f2-bc9e-2b25d84f2bca)
+Acessar o container RabbitMQ:
 
+bash
 
-
-
-# Monitorar rabbitmq
-docker ps
 docker exec -it nome_do_container bash
+
+Habilitar o plugin de gerenciamento do RabbitMQ:
+
+```bash
 rabbitmq-plugins enable rabbitmq_management
-http://localhost:15672
-# Se necessário
+```
+
+Acessar o RabbitMQ Management:
+
+    http://localhost:15672
+
+(Opcional) Adicionar um usuário:
+
+```bash
 rabbitmqctl add_user nome_usuario senha
 rabbitmqctl set_user_tags nome_usuario administrator
-exit
-docker restart nome_do_container
+```
+
+Sair do container e reiniciá-lo:
+
+```bash
+
+    exit
+    docker restart nome_do_container```
+
