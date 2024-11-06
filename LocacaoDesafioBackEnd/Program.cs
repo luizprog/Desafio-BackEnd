@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Runtime.CompilerServices;
+using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,8 +53,18 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 // Configuração do banco de dados
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+if (builder.Environment.IsEnvironment("Testing"))
+{
+    // Usando banco de dados em memória para os testes
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseInMemoryDatabase("TestDatabase"));
+}
+else
+{
+    // Usando o banco de dados PostgreSQL para ambientes de produção e desenvolvimento
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+}
 
 // Configurando o Identity
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -147,7 +160,7 @@ else
 }
 
 app.UseRouting();
-app.UseCors("AllowAll"); 
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
